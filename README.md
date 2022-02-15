@@ -1,4 +1,4 @@
-# proj_calculator
+# To-Do-App_Vue
 
 ## Project setup
 ```
