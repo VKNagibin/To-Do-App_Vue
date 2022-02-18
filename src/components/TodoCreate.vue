@@ -4,7 +4,7 @@
         <h1>What To Do?</h1>
         <form>
             <input type="text" placeholder="to do something" v-model="value">
-            <button @click="btnHandler">Create</button>
+            <button @click.prevent="btnHandler">Create</button>
             
         </form>
     </fieldset>
@@ -19,16 +19,17 @@ export default {
         }
     },
     methods: {
-        btnHandler(e) {
+        btnHandler() {
+            if (this.value.trim() === '') {
+                return;
+            }
             let date = new Date();
-            e.preventDefault();
             this.$emit("todo", 
                 { id: Date.now(), 
-                  content: this.value,
-                  date: `${date.getHours()}.${date.getMinutes()}.${date.getSeconds()} `+
+                  content: this.value.trim(),
+                  date: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} `+
                         `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`});
             this.value = '';
-           
         }
     }
 }
@@ -38,7 +39,6 @@ export default {
     @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 
     fieldset {
-        margin-bottom: 40px;
         border: 10px solid;
         width: 100%;
     }

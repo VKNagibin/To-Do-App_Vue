@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <todo-create @todo="todo"/>
+        <input type="text" class="search" @input="search" placeholder="search...">
         <todo-container :todos="todos" @delete="deleteFunc" @edit="edit"/>
     </div>
 </template>
@@ -17,6 +18,8 @@ export default {
     data() {
         return {
             todos: [],
+            saveTodos: [],
+            count: 0,
         }
     },
     mounted() {
@@ -26,10 +29,30 @@ export default {
            } catch(err) {
                localStorage.removeItem('todos');
            }
-           console.log(this.todos);
         }
     },
     methods: {
+        search(e) {
+            let str = e.target.value;
+
+            if (!this.count++) {
+                this.saveTodos = JSON.stringify(this.todos);
+            }
+            if (str === '') {
+                this.todos = JSON.parse(this.saveTodos);
+                this.count = 0;
+                return;
+            }
+
+            this.todos =JSON.parse(this.saveTodos).filter(item => {
+                if( item.content.substring(0, str.length) === str) {
+                    return true
+                }
+                
+            });
+            
+            
+        },
         todo(value) {
             this.todos.unshift(value);
             localStorage.setItem('todos', JSON.stringify(this.todos));
@@ -61,8 +84,8 @@ export default {
     body {
         min-height: 100vh;
         background: linear-gradient(90deg, rgba(0,0,0,0.1017449216014531) 0%, rgba(0,0,0,0.1) 100%), url('../img/gotham_17_11673_oboi_zvezdnoe_nebo_1920x1080.jpg'); 
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
+        background-size: 100vw 100vh;
+        background-repeat: repeat-y;
     }
     .container {
         width: 1200px;
@@ -78,6 +101,14 @@ export default {
     }
     button:hover, input:hover {
         transform: scale(110%);
+    }
+    .search {
+        box-sizing: content-box;
+        width: 50%;
+        font-size: 2em;
+        padding: 5px 10px;
+        border: 4px solid;
+        margin: 20px 0 20px 40px;
     }
     
 </style>

@@ -15,6 +15,7 @@ export default {
     props: {
         todos: Array,
     },
+    emits: ['delete', 'edit'],
     methods: {
         deleteBtn(todo) {
             let newList = this.todos;
@@ -27,9 +28,8 @@ export default {
         editBtn(todo) {
             let newList = this.todos;
             let newContent = prompt('Enter edited task: ', todo.content);
-            todo.content = newContent;
+            todo.content = newContent === null ? todo.content : newContent;
             this.$emit('edit', newList);
-
         }
     },
 }
