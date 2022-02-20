@@ -14,19 +14,21 @@
 export default {
     props: {
         todos: Array,
+        saveTodos: Array,
     },
     emits: ['delete', 'edit'],
     methods: {
         deleteBtn(todo) {
-            let newList = this.todos;
-            let index = this.todos.findIndex((el) => {
+            let newList = this.saveTodos;
+            let index = this.saveTodos.findIndex((el) => {
                 return el === todo;
             });
             newList.splice(index, 1);
+
             this.$emit('delete', newList);
         },
         editBtn(todo) {
-            let newList = this.todos;
+            let newList = this.saveTodos;
             let newContent = prompt('Enter edited task: ', todo.content);
             todo.content = newContent === null ? todo.content : newContent;
             this.$emit('edit', newList);
@@ -42,6 +44,7 @@ export default {
         width: 100%;
         padding: 20px 40px;
         border: 4px solid;
+        
     }
     .date {
         padding: 0 10px;

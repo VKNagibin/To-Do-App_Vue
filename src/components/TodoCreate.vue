@@ -3,8 +3,8 @@
         <legend>To Do App</legend>
         <h1>What To Do?</h1>
         <form>
-            <input type="text" placeholder="to do something" v-model="value">
-            <button @click.prevent="btnHandler">Create</button>
+            <input type="text" placeholder="to do something" v-model="value" :disabled="searchValue !== ''">
+            <button @click.prevent="btnHandler" :disabled="searchValue !== ''" >Create</button>
             
         </form>
     </fieldset>
@@ -13,6 +13,9 @@
 <script>
 
 export default {
+    props: {
+        searchValue: String,
+    },
     data() {
         return {
             value: '',
@@ -30,6 +33,11 @@ export default {
                   date: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} `+
                         `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`});
             this.value = '';
+        },
+        search() {
+            if (this.searchValue) {
+                return false
+            }
         }
     }
 }
