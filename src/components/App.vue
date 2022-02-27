@@ -2,30 +2,29 @@
     <div class="container">
         <todo-create @todo="todo" :searchValue="searchValue" />
         <input type="text" class="search" @input="search" v-model="searchValue" placeholder="search...">
-        <todo-container :todos="todos" :saveTodos="saveTodos" @delete="deleteFunc" @edit="edit"/>
-        <!-- <archive/>   -->
+        <todo-container :todos="todos" :saveTodos="saveTodos" @delete="deleteFunc" @edit="edit" />
+        <archive :items="archiveItems" @delete="newArch"/>
+       
     </div>
 </template>
 
 <script>
 import todoCreate from './TodoCreate'
 import todoContainer from './TodoContainer'
-// import archive from './Archive'
+import archive from './Archive'
 
 export default {
     components: {
         todoCreate,
         todoContainer,
-        // archive,
+        archive,
     },
     data() {
         return {
             searchValue: '',
             todos: [],
             saveTodos: [],
-            count: 0,
-            // archiveItems: [],
-            exit: false,
+            archiveItems: [],
         }
     },
     mounted() {
@@ -36,6 +35,15 @@ export default {
                localStorage.removeItem('todos');
            }
         }
+
+        if (localStorage.getItem('archive')) {
+           try {
+               this.archiveItems = JSON.parse(localStorage.getItem('archive'));
+           } catch(err) {
+               localStorage.removeItem('archive');
+           }
+        }
+
         this.saveTodos = this.todos;
     },
     methods: {
@@ -60,9 +68,10 @@ export default {
             this.todos.unshift(value);
             localStorage.setItem('todos', JSON.stringify(this.todos));
         },
-        deleteFunc(todos) {
+        deleteFunc(todos, archived) {
             this.todos = todos;
-            // this.archiveItems.push(archived);
+            this.archiveItems.push(archived);
+            localStorage.setItem('archive', JSON.stringify(this.archiveItems));
             localStorage.setItem('todos', JSON.stringify(this.todos));
             this.searchValue = '';
         },
@@ -71,91 +80,68 @@ export default {
             localStorage.setItem('todos', JSON.stringify(this.todos));
             this.searchValue = '';
         },
+        newArch(archive) {
+            this.archiveItems = archive;
+            localStorage.setItem('archive', JSON.stringify(this.archiveItems));
+        }
     },
 }
 </script>
 
 <style>
-    *,*:after, *:before{
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-        outline: none;
-        border: none;
+    *,*:after, *:before {
         background: transparent;
-        color: #cc8fff;
         border-color: #b25bf8;
         border-radius: 50px;
+        border: none;
+        box-sizing: border-box;
+        color: #cc8fff;
+        margin: 0;
+        outline: none;
+        padding: 0;
+        scrollbar-color: #b25bf8 black;
+        scrollbar-width: 10px;
+    }
+    ::-webkit-scrollbar {
+        width: 15px; 
+        height: 15px; 
+        background: linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.5) 100%), url('../img/zvezdy_kosmos_temnyj_139528_1920x1080.jpg');
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: #b25bf8;
+        border-radius: 25px;
+        box-shadow: inset -5px 5px 10px black;
     }
     body {
-        min-height: 100vh;
-        background: linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.5) 100%), url('../img/zvezdy_kosmos_temnyj_139528_1920x1080.jpg'); 
-        background-size: 100vw 100vh;
         background-repeat: repeat-y;
+        background-size: 100vw 100vh;
+        background: linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.5) 100%), url('../img/zvezdy_kosmos_temnyj_139528_1920x1080.jpg');
+        min-height: 100vh;
     }
     .container {
-        width: 1200px;
         margin: 0 auto;
+        width: 1200px;
     }
     button {
         cursor: pointer;
-        width: 15%;
         transition: .3s;
+        width: 15%;
+        opacity: .7;
     }
-    input, .archive, .exit {
+    input{
         transition: .5s;
+        opacity: .7;
     }
-    button:hover, input:hover,  .archive:hover{
+    button:hover, input:hover, .open-archive:hover{
         transform: scale(110%);
+        opacity: 1;
     }
     .search {
+        border: 2px solid;
         box-sizing: content-box;
-        width: 50%;
         font-size: 2em;
-        padding: 5px 10px;
-        border: 4px solid;
         margin: 20px 0 20px 40px;
+        padding: 5px 10px;
+        width: 50%;
     }
-    /* .archive {
-        box-sizing: content-box;
-        width: 100px;
-        padding: 45px 10px;
-        font-size: 2em;
-        background: blue;
-        position: fixed;
-        bottom: 10px;
-        right: 10px;
-        border-radius: 0;
-        cursor: pointer;
-        text-align: center;
-    }
-    .archiveWrapper {
-        display: none;
-        position: fixed;
-        padding: 20px 50px;
-        top: 10px;
-        left: 10px;
-        right: 10px;
-        bottom: 10px;
-        z-index: 10;
-        background: rgba(0, 0, 0, 0.5);
-        border: 10px solid rgb(105, 21, 131);
-    }
-    .exit {
-        cursor: pointer;
-        box-sizing: content-box;
-        font-family: sans-serif;
-        border: 10px solid rgb(105, 21, 131);
-        text-align: center;
-        width: 150px;
-        padding: 20px 0;
-        font-size: 5em;
-        position: absolute;
-        top: -10px;
-        right: -10px;
-    }
-    .exit:hover {
-        font-size: 6em;
-    } */
-    
 </style>

@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import {dateStyler} from '../helper.js';
 
 export default {
     props: {
@@ -30,16 +31,11 @@ export default {
             this.$emit("todo", 
                 { id: Date.now(), 
                   content: this.value.trim(),
-                  date: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} `+
-                        `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`});
+                  date: dateStyler(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} `+
+                        `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`)});
             this.value = '';
         },
-        search() {
-            if (this.searchValue) {
-                return false
-            }
-        }
-    }
+    },
 }
 </script>
 
@@ -47,36 +43,36 @@ export default {
     @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 
     fieldset {
-        border: 10px solid;
-        width: 100%;
-    }
+          border: 10px solid;
+          width: 100%;
+         }
     legend {
-        font-family: 'Satisfy', cursive;
-        padding: 0 10px 20px 10px;
-        font-size: 3em;
-        margin-left: 50px;
-    }
-    h1 { 
-        width: 90%;
-        font-size: 4em;
-        margin: 0 auto;
-        text-align: center;
-    }
+          font-family: 'Satisfy', cursive;
+          font-size: 3em;
+          margin-left: 50px;
+          padding: 0 10px 20px 10px;
+         }
+    h1 {
+           font-size: 4em;
+           margin: 0 auto;
+           text-align: center;
+           width: 90%;
+          }
     form {
-        width: 90%;
-        margin: 50px auto 50px auto;
-        display: flex;
-    }
+          display: flex;
+          margin: 50px auto 50px auto;
+          width: 90%;
+         }
     input {
-        border: 2px solid;
-        width: 65%;
-        margin-left: 7%;
-        padding: 1em;
-        font-size: 2em;
-    }
+          border: 2px solid;
+          font-size: 2em;
+          margin-left: 7%;
+          padding: 1em;
+          width: 65%;
+         }
     button {
-        border: 2px solid;
-        font-size: 2em;
-        margin-left: 6%;
-    }
+          border: 2px solid;
+          font-size: 2em;
+          margin-left: 6%;
+         }
 </style>
