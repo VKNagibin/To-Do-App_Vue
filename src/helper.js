@@ -2,7 +2,7 @@
 let dateStyler = (date) => {
     let regExp = /[:.\s]/g;
     let signs = date.matchAll(regExp);
-    let indexs = [];
+    let indexes = [];
     let count = 0;
 
     date = date.trim().split('');
@@ -10,10 +10,10 @@ let dateStyler = (date) => {
     signs = Array.from(signs);
 
     signs.forEach(sign => {
-        indexs.push(sign.index);
+        indexes.push(sign.index);
     });
 
-    indexs.forEach(index => {
+    indexes.forEach(index => {
         if (index - 2 === -1) {
             date.unshift('0');
             count++;
