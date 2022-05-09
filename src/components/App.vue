@@ -106,6 +106,7 @@ export default {
         width: 15px; 
         height: 15px; 
         background: linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.5) 100%), url('../img/zvezdy_kosmos_temnyj_139528_1920x1080.jpg');
+        background-size: 100%;
     }
     ::-webkit-scrollbar-thumb {
         background-color: #b25bf8;

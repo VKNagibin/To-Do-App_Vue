@@ -35,7 +35,7 @@ export default {
         editBtn(todo) {
             let newList = this.saveTodos;
             let newContent = prompt('Enter edited task: ', todo.content);
-            todo.content = newContent === null ? todo.content : newContent;
+            todo.content = newContent === null || newContent === '' ? todo.content : newContent;
             this.$emit('edit', newList);
         }
     },
